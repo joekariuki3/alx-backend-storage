@@ -5,9 +5,7 @@ in a collection based on kwargs"""
 
 def insert_school(mongo_collection, **kwargs):
     """ insert kwargs in mongo_collection"""
-    argumentList = []
+    insertedItem = 0
     for key, value in kwargs.items():
-        argumentList.append({key: value})
-    mongo_collection.insert_many(argumentList)
-    newId = mongo_collection.find({}, {"_id": 1})
-    return newId
+        insertedItem = mongo_collection.insert_one({key: value})
+    return insertedItem.inserted_id
