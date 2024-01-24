@@ -21,7 +21,7 @@ class Cache:
         self._redis.set(newKey, data)
         return newKey
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, int, None]:
+    def get(self, key: str, fn=None) -> Union[str, int, None]:
         """retrives a value for the passed key
         then uses fn to convert the value to its appropriate
         type return the value if found or None"""
@@ -32,7 +32,7 @@ class Cache:
             return None
         if fn:
             return fn(binaryData)
-        return binaryData 
+        return binaryData
 
     def get_str(self, binaryData: bytes) -> str:
         """converts binaryData to string and returns it"""
