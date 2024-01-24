@@ -21,7 +21,7 @@ class Cache:
         self._redis.set(newKey, data)
         return newKey
 
-    def get(self, key: str, fn: Callable) -> Union[str, int, None]:
+    def get(self, key: str, fn=None) -> Union[str, int, None]:
         """retrives a value for the passed key
         then uses fn to convert the value to its appropriate
         type return the value if found or None"""
