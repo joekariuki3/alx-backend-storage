@@ -82,3 +82,30 @@ class Cache:
     def get_int(self, binaryData: bytes) -> int:
         """converts binaryData to int and returns it"""
         return int(binaryData)
+
+    def replay(self, func):
+        """display the inputs and outputs of a function that are
+        stored in redis"""
+
+        """Get the qualified name of the function"""
+        key = func.__qualname__
+
+        """Create input and output list keys"""
+        inputs_key = f"{key}:inputs"
+        outputs_key = f"{key}:outputs"
+
+        """Retrieve input and output history from Redis"""
+        inputs_history = cache_instance._redis.lrange(inputs_key, 0, -1)
+        outputs_history = cache_instance._redis.lrange(outputs_key, 0, -1)
+
+        """Display the history of calls"""
+        print(f"{key} was called {len(inputs_history)} times:")
+
+        for inputs, output in zip(inputs_history, outputs_history):
+            """Convert inputs and output from strings to
+            their respective types"""
+            inputs = eval(inputs.decode())
+            output = eval(output.decode())
+
+            """Display the function call details"""
+            print(f"{key}(*{inputs}) -> {output}")
